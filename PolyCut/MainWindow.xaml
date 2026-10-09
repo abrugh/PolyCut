@@ -41,7 +41,7 @@
 
 
         <Label Margin="0 15 0 0" HorizontalAlignment="Center"
-               Content="{Binding CurrentProjectName, FallbackValue=Project 1}"
+               Content="{Binding ProjectTitle, FallbackValue=Project 1}"
                Foreground="#40FFFFFF" IsHitTestVisible="False" />
 
         <ui:TitleBar x:Name="MWTitleBar"

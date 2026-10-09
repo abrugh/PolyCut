@@ -25,6 +25,7 @@
 "Bed Dimensions" = "Dimensions du plateau"
 "Blade Settings" = "Paramètres de la lame"
 "Boolean operation failed." = "L’opération booléenne a échoué."
+"Cancel" = "Cancel" # LOC:TODO
 "Cancel Preview" = "Annuler l’aperçu"
 "Cannot perform boolean operations on open paths (Lines). All shapes must be closed." = "Impossible d’effectuer des opérations booléennes sur des tracés ouverts (lignes). Toutes les formes doivent être fermées."
 "Cannot perform boolean operations on open paths. All shapes must be closed." = "Impossible d’effectuer des opérations booléennes sur des tracés ouverts. Toutes les formes doivent être fermées."
@@ -38,7 +39,6 @@
 "Combine" = "Combiner"
 "Combine Shapes" = "Combiner les formes"
 "Copy" = "Copier"
-"Creating a new project will clear the current workspace. Continue?" = "La création d’un nouveau projet effacera l’espace de travail actuel. Continuer ?"
 "Cursor Colour" = "Couleur du curseur"
 "Curve simplification tolerance in pixels (try 0.5-2.5). Higher values simplify more aggressively at the cost of precision." = "Tolérance de simplification des courbes en pixels (essayez 0,5 à 2,5). Des valeurs plus élevées simplifient davantage, au détriment de la précision."
 "Curve-fitting Precision" = "Précision de l’ajustement des courbes"
@@ -49,6 +49,7 @@
 "Discards detected patches smaller than this many pixels, 0-128. Increase this to clean up small stray specks and noise left over from tracing; decrease it to preserve fine detail." = "Ignore les zones détectées plus petites que ce nombre de pixels, de 0 à 128. Augmentez cette valeur pour supprimer les petites taches et le bruit résiduel après vectorisation ; diminuez-la pour préserver les détails fins."
 "Distribute Horizontally" = "Distribute Horizontally" # LOC:TODO
 "Distribute Vertically" = "Distribute Vertically" # LOC:TODO
+"Don't Save" = "Don't Save" # LOC:TODO
 "Draw Outlines Before Fill" = "Tracer les contours avant le remplissage"
 "Drawing Group is already empty" = "Le groupe de dessin est déjà vide"
 "Drawing Line Colour" = "Couleur des lignes de dessin"
@@ -87,13 +88,10 @@
 "Keep Outlines" = "Conserver les contours"
 "Language Load Error" = "Erreur de chargement de la langue"
 "Lightest shading spacing" = "Espacement des hachures les plus claires"
-"Load Project" = "Charger un projet"
-"Loading a project will clear the current workspace. Continue?" = "Le chargement d’un projet effacera l’espace de travail actuel. Continuer ?"
 "Maximum Colours (0 = Unlimited)" = "Nombre maximal de couleurs (0 = illimité)"
 "Merge Angle" = "Merge Angle" # LOC:TODO
 "Minimum colour difference required between adjacent gradient layers, 0-255. Higher values merge similar shades into fewer, flatter colour bands; smaller values preserve smoother gradients with more distinct layers." = "Différence minimale de couleur requise entre les couches de dégradé adjacentes, de 0 à 255. Des valeurs élevées fusionnent les teintes similaires en bandes de couleur moins nombreuses et plus uniformes ; des valeurs faibles préservent des dégradés plus lisses avec davantage de couches distinctes."
 "New Project" = "Nouveau projet"
-"No" = "Non"
 "No intersection found. The selected shapes do not overlap." = "Aucune intersection trouvée. Les formes sélectionnées ne se chevauchent pas."
 "No paths on canvas" = "Aucun tracé sur le canevas"
 "Number of Passes" = "Nombre de passes"
@@ -121,7 +119,9 @@
 "Rotation" = "Rotation"
 "SVG Exported" = "SVG exporté"
 "S_ave As..." = "Enregistrer _sous..."
+"Save" = "Save" # LOC:TODO
 "Save GCode" = "Enregistrer le GCode"
+"Save changes to {0}?" = "Save changes to {0}?" # LOC:TODO
 "Saved Preset" = "Préréglage enregistré"
 "Saved to: {0}" = "Enregistré dans : {0}"
 "Scaling may not be correct" = "L’échelle peut être incorrecte"
@@ -165,13 +165,14 @@
 "Ungroup" = "Ungroup" # LOC:TODO
 "Union operation resulted in an empty geometry. This should not happen." = "L’union a produit une géométrie vide. Cela ne devrait pas se produire."
 "Unknown SVG Unit Type: " = "Type d’unité SVG inconnu : "
+"Unsaved Changes" = "Unsaved Changes" # LOC:TODO
+"Untitled" = "Untitled" # LOC:TODO
 "Update Available ▸ Version {0}" = "Mise à jour disponible ▸ Version {0}"
 "Update Preview" = "Mettre à jour l’aperçu"
 "Uses adaptive thresholding instead of a single fixed cutoff. Ideal for scans or photos with uneven lighting, since the threshold is recalculated locally across the image rather than applied globally." = "Utilise un seuillage adaptatif au lieu d’un seuil fixe unique. Idéal pour les scans ou les photos avec un éclairage inégal, car le seuil est recalculé localement dans l’image au lieu d’être appliqué globalement."
 "Working Area" = "Zone de travail"
 "Workspace cleared" = "Espace de travail effacé"
 "XOR operation resulted in an empty geometry. The shapes may be identical." = "L’opération XOR a produit une géométrie vide. Les formes sont peut-être identiques."
-"Yes" = "Oui"
 "Z Height" = "Hauteur Z"
 "Z Offset Per Pass" = "Décalage Z par passe"
 "_Edit" = "É_dition"
@@ -405,3 +406,10 @@
 "For cutting or engraving thicker materials, a slightly negative value can be used to gradually cut deeper with each pass, which can improve quality and reduce the chance of blade breakage." = "Pour couper ou graver des matériaux plus épais, une valeur légèrement négative peut être utilisée afin de couper progressivement plus profondément à chaque passe, ce qui peut améliorer la qualité et réduire le risque de casse de la lame."
 "Positive values move the tool up after each pass, while negative values move the tool down after each pass." = "Les valeurs positives déplacent l’outil vers le haut après chaque passe, tandis que les valeurs négatives le déplacent vers le bas."
 "The distance in Z that the tool should move after each pass when multiple passes are enabled." = "Distance en Z que l’outil doit parcourir après chaque passe lorsque plusieurs passes sont activées."
+
+[obsolete]
+"Creating a new project will clear the current workspace. Continue?" = "La création d’un nouveau projet effacera l’espace de travail actuel. Continuer ?"
+"Load Project" = "Charger un projet"
+"Loading a project will clear the current workspace. Continue?" = "Le chargement d’un projet effacera l’espace de travail actuel. Continuer ?"
+"No" = "Non"
+"Yes" = "Oui"

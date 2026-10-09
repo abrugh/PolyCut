@@ -25,6 +25,7 @@
 "Bed Dimensions" = "ベッド寸法"
 "Blade Settings" = "ブレード設定"
 "Boolean operation failed." = "ブール演算に失敗しました。"
+"Cancel" = "Cancel" # LOC:TODO
 "Cancel Preview" = "プレビューをキャンセル"
 "Cannot perform boolean operations on open paths (Lines). All shapes must be closed." = "開いたパス（線）にはブール演算を実行できません。すべての形状を閉じる必要があります。"
 "Cannot perform boolean operations on open paths. All shapes must be closed." = "開いたパスにはブール演算を実行できません。すべての形状を閉じる必要があります。"
@@ -38,7 +39,6 @@
 "Combine" = "結合"
 "Combine Shapes" = "形状を結合"
 "Copy" = "コピー"
-"Creating a new project will clear the current workspace. Continue?" = "新しいプロジェクトを作成すると、現在のワークスペースが消去されます。続行しますか？"
 "Cursor Colour" = "カーソル色"
 "Curve simplification tolerance in pixels (try 0.5-2.5). Higher values simplify more aggressively at the cost of precision." = "曲線簡略化の許容誤差（ピクセル、0.5～2.5 を推奨）。値を大きくするとより強く簡略化されますが、精度は低下します。"
 "Curve-fitting Precision" = "曲線フィッティング精度"
@@ -49,6 +49,7 @@
 "Discards detected patches smaller than this many pixels, 0-128. Increase this to clean up small stray specks and noise left over from tracing; decrease it to preserve fine detail." = "検出されたパッチのうち、このピクセル数未満のものを破棄します（0～128）。値を大きくするとトレース後に残る小さな点やノイズを除去しやすくなり、値を小さくすると細部を保持できます。"
 "Distribute Horizontally" = "Distribute Horizontally" # LOC:TODO
 "Distribute Vertically" = "Distribute Vertically" # LOC:TODO
+"Don't Save" = "Don't Save" # LOC:TODO
 "Draw Outlines Before Fill" = "塗りつぶし前に輪郭を描画"
 "Drawing Group is already empty" = "描画グループは既に空です"
 "Drawing Line Colour" = "描画線の色"
@@ -87,13 +88,10 @@
 "Keep Outlines" = "輪郭を保持"
 "Language Load Error" = "言語読み込みエラー"
 "Lightest shading spacing" = "最明部のシェーディング間隔"
-"Load Project" = "プロジェクトを読み込む"
-"Loading a project will clear the current workspace. Continue?" = "プロジェクトを読み込むと、現在のワークスペースが消去されます。続行しますか？"
 "Maximum Colours (0 = Unlimited)" = "最大色数（0 = 無制限）"
 "Merge Angle" = "Merge Angle" # LOC:TODO
 "Minimum colour difference required between adjacent gradient layers, 0-255. Higher values merge similar shades into fewer, flatter colour bands; smaller values preserve smoother gradients with more distinct layers." = "隣接するグラデーションレイヤー間に必要な最小色差（0～255）。値を高くすると似た色調が統合され、より少数で均一な色帯になります。値を低くすると、より多くの異なるレイヤーを使って滑らかなグラデーションを保持します。"
 "New Project" = "新しいプロジェクト"
-"No" = "いいえ"
 "No intersection found. The selected shapes do not overlap." = "交差部分が見つかりません。選択した形状は重なっていません。"
 "No paths on canvas" = "キャンバス上にパスがありません"
 "Number of Passes" = "パス回数"
@@ -121,7 +119,9 @@
 "Rotation" = "回転"
 "SVG Exported" = "SVG をエクスポートしました"
 "S_ave As..." = "名前を付けて保_存..."
+"Save" = "Save" # LOC:TODO
 "Save GCode" = "GCode を保存"
+"Save changes to {0}?" = "Save changes to {0}?" # LOC:TODO
 "Saved Preset" = "プリセットを保存しました"
 "Saved to: {0}" = "保存先: {0}"
 "Scaling may not be correct" = "スケーリングが正しくない可能性があります"
@@ -165,13 +165,14 @@
 "Ungroup" = "Ungroup" # LOC:TODO
 "Union operation resulted in an empty geometry. This should not happen." = "和集合演算の結果が空のジオメトリになりました。これは通常発生しません。"
 "Unknown SVG Unit Type: " = "不明な SVG 単位タイプ: "
+"Unsaved Changes" = "Unsaved Changes" # LOC:TODO
+"Untitled" = "Untitled" # LOC:TODO
 "Update Available ▸ Version {0}" = "更新があります ▸ バージョン {0}"
 "Update Preview" = "プレビューを更新"
 "Uses adaptive thresholding instead of a single fixed cutoff. Ideal for scans or photos with uneven lighting, since the threshold is recalculated locally across the image rather than applied globally." = "単一の固定しきい値ではなく適応しきい値処理を使用します。画像全体ではなく局所的にしきい値を再計算するため、照明ムラのあるスキャン画像や写真に適しています。"
 "Working Area" = "作業領域"
 "Workspace cleared" = "ワークスペースを消去しました"
 "XOR operation resulted in an empty geometry. The shapes may be identical." = "XOR 演算の結果が空のジオメトリになりました。形状が同一である可能性があります。"
-"Yes" = "はい"
 "Z Height" = "Z 高さ"
 "Z Offset Per Pass" = "パスごとの Z オフセット"
 "_Edit" = "編_集"
@@ -405,3 +406,10 @@
 "For cutting or engraving thicker materials, a slightly negative value can be used to gradually cut deeper with each pass, which can improve quality and reduce the chance of blade breakage." = "厚い材料を切断または彫刻する場合、わずかに負の値を設定すると各パスで徐々に深く加工できます。これにより品質が向上し、ブレード破損の可能性を低減できる場合があります。"
 "Positive values move the tool up after each pass, while negative values move the tool down after each pass." = "正の値では各パス後にツールが上がり、負の値では下がります。"
 "The distance in Z that the tool should move after each pass when multiple passes are enabled." = "複数パスが有効な場合に、各パスの後でツールを Z 方向に移動する距離。"
+
+[obsolete]
+"Creating a new project will clear the current workspace. Continue?" = "新しいプロジェクトを作成すると、現在のワークスペースが消去されます。続行しますか？"
+"Load Project" = "プロジェクトを読み込む"
+"Loading a project will clear the current workspace. Continue?" = "プロジェクトを読み込むと、現在のワークスペースが消去されます。続行しますか？"
+"No" = "いいえ"
+"Yes" = "はい"

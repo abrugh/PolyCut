@@ -69,6 +69,26 @@ Class MainWindow : Implements INavigationWindow
         Throw New NotImplementedException()
     End Sub
 
+    ' Closing with unsaved changes: cancel this close, ask Save / Don't Save / Cancel, then close for real.
+    Private _closeConfirmed As Boolean
+
+    Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
+        Dim vm = TryCast(DataContext, MainViewModel)
+        If Not _closeConfirmed AndAlso vm IsNot Nothing AndAlso vm.HasUnsavedChanges Then
+            e.Cancel = True
+            ConfirmAndClose(vm)
+            Return
+        End If
+        MyBase.OnClosing(e)
+    End Sub
+
+    Private Async Sub ConfirmAndClose(vm As MainViewModel)
+        If Await vm.ConfirmUnsavedChangesAsync() Then
+            _closeConfirmed = True
+            Close()
+        End If
+    End Sub
+
     Dim svg_file As String = ""
 
     Private Sub AnyPreviewKeyDown(sender As Object, e As KeyEventArgs)

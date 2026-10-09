@@ -247,6 +247,7 @@ Partial Public Class MainViewModel
         _svgImportService = svgImportService
         _undoRedoService = undoRedoService
         _projectService = projectService
+        AddHandler _undoRedoService.IsDirtyChanged, Sub() OnPropertyChanged(NameOf(ProjectTitle))
 
 
         AddHandler PolyCanvas.SelectionCountChanged, AddressOf OnCanvasSelectionChanged
@@ -811,6 +812,7 @@ Partial Public Class MainViewModel
     End Function
 
     <NotifyPropertyChangedFor(NameOf(CurrentProjectName))>
+    <NotifyPropertyChangedFor(NameOf(ProjectTitle))>
     <ObservableProperty> Private _currentProjectPath As String = Nothing
 
     Public ReadOnly Property CurrentProjectName As String
@@ -819,56 +821,87 @@ Partial Public Class MainViewModel
         End Get
     End Property
 
+    Public ReadOnly Property HasUnsavedChanges As Boolean
+        Get
+            Return _undoRedoService.IsDirty
+        End Get
+    End Property
+
+    ''' <summary>Project name for the title bar, with a dot when there are unsaved changes.</summary>
+    Public ReadOnly Property ProjectTitle As String
+        Get
+            Dim name = CurrentProjectName
+            If Not HasUnsavedChanges Then Return name
+            Return If(String.IsNullOrEmpty(name), "Untitled".LT(), name) & " •"
+        End Get
+    End Property
+
     <RelayCommand>
     Private Sub SaveProject()
-        If String.IsNullOrEmpty(CurrentProjectPath) Then
-            SaveProjectAs()
-        Else
-            If _projectService.SaveProject(CurrentProjectPath, DrawableCollection, ImportedGroups, Configuration) Then
-                _snackbarService.GenerateSuccess("Project Saved".LT(), IO.Path.GetFileName(CurrentProjectPath))
-            Else
-                _snackbarService.GenerateError("Error".LT(), "Failed to save project".LT(), 3)
-            End If
-        End If
+        TrySaveProject()
     End Sub
 
     <RelayCommand>
     Private Sub SaveProjectAs()
+        TrySaveProjectAs()
+    End Sub
+
+    ''' <summary>Saves to the current file (asks for one if there isn't one yet). False if cancelled or failed.</summary>
+    Private Function TrySaveProject() As Boolean
+        If String.IsNullOrEmpty(CurrentProjectPath) Then Return TrySaveProjectAs()
+        Return WriteProject()
+    End Function
+
+    Private Function TrySaveProjectAs() As Boolean
         Dim saveDialog As New Microsoft.Win32.SaveFileDialog With {
             .Filter = "PolyCut Project (*.polycut)|*.polycut|All Files (*.*)|*.*",
             .DefaultExt = ".polycut"
         }
 
-        If saveDialog.ShowDialog() = True Then
-            CurrentProjectPath = saveDialog.FileName
-            If _projectService.SaveProject(CurrentProjectPath, DrawableCollection, ImportedGroups, Configuration) Then
-                _snackbarService.GenerateSuccess("Project Saved".LT(), IO.Path.GetFileName(CurrentProjectPath))
-            Else
-                _snackbarService.GenerateError("Error".LT(), "Failed to save project".LT(), 3)
-            End If
+        If saveDialog.ShowDialog() <> True Then Return False
+        CurrentProjectPath = saveDialog.FileName
+        Return WriteProject()
+    End Function
+
+    Private Function WriteProject() As Boolean
+        If _projectService.SaveProject(CurrentProjectPath, DrawableCollection, ImportedGroups, Configuration) Then
+            _undoRedoService.MarkSaved()
+            _snackbarService.GenerateSuccess("Project Saved".LT(), IO.Path.GetFileName(CurrentProjectPath))
+            Return True
         End If
-    End Sub
+        _snackbarService.GenerateError("Error".LT(), "Failed to save project".LT(), 3)
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' If there are unsaved changes, asks Save / Don't Save / Cancel. True = go ahead (saved or discarded),
+    ''' False = stay (cancelled, or the save was cancelled/failed).
+    ''' </summary>
+    Public Async Function ConfirmUnsavedChangesAsync() As Task(Of Boolean)
+        If Not HasUnsavedChanges Then Return True
+
+        Dim name = If(String.IsNullOrEmpty(CurrentProjectName), "Untitled".LT(), CurrentProjectName)
+        Dim box As New Wpf.Ui.Controls.MessageBox With {
+            .Title = "Unsaved Changes".LT(),
+            .Content = "Save changes to {0}?".LTF(name),
+            .IsPrimaryButtonEnabled = True,
+            .PrimaryButtonText = "Save".LT(),
+            .IsSecondaryButtonEnabled = True,
+            .SecondaryButtonText = "Don't Save".LT(),
+            .CloseButtonText = "Cancel".LT(),
+            .Owner = Application.Current.MainWindow,
+            .WindowStartupLocation = WindowStartupLocation.CenterOwner}
+
+        Select Case Await box.ShowDialogAsync()
+            Case Wpf.Ui.Controls.MessageBoxResult.Primary : Return TrySaveProject()
+            Case Wpf.Ui.Controls.MessageBoxResult.Secondary : Return True
+            Case Else : Return False
+        End Select
+    End Function
 
     <RelayCommand>
     Private Async Sub LoadProject()
-        ' Warn if unsaved changes
-        If DrawableCollection.Count > 1 Then
-
-            Dim nx As New Wpf.Ui.Controls.MessageBox With {
-                .Title = "Load Project".LT(),
-                .Content = "Loading a project will clear the current workspace. Continue?".LT(),
-                .IsPrimaryButtonEnabled = True,
-                .PrimaryButtonText = "Yes".LT(),
-                .CloseButtonText = "No".LT(),
-                .Owner = Application.Current.MainWindow,
-                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-
-            Dim res = Await nx.ShowDialogAsync()
-
-
-            If res <> WPF.Ui.Controls.MessageBoxResult.Primary Then Return
-        End If
+        If Not Await ConfirmUnsavedChangesAsync() Then Return
 
         Dim openDialog As New Microsoft.Win32.OpenFileDialog With {
             .Filter = "PolyCut Project (*.polycut)|*.polycut|All Files (*.*)|*.*",
@@ -880,6 +913,7 @@ Partial Public Class MainViewModel
             If action.Execute() Then
                 _undoRedoService.Clear()
                 _undoRedoService.Push(action)
+                _undoRedoService.MarkSaved()
                 CurrentProjectPath = openDialog.FileName
                 _snackbarService.GenerateSuccess("Project Loaded".LT(), IO.Path.GetFileName(CurrentProjectPath))
                 NotifyCollectionsChanged()
@@ -891,23 +925,7 @@ Partial Public Class MainViewModel
 
     <RelayCommand>
     Private Async Sub NewProject()
-        If DrawableCollection.Count > 1 Then
-            Dim nx As New Wpf.Ui.Controls.MessageBox With {
-                .Title = "New Project".LT(),
-                .Content = "Creating a new project will clear the current workspace. Continue?".LT(),
-                .IsPrimaryButtonEnabled = True,
-                .PrimaryButtonText = "Yes".LT(),
-                .CloseButtonText = "No".LT(),
-                .Owner = Application.Current.MainWindow,
-                .WindowStartupLocation = WindowStartupLocation.CenterOwner}
-
-
-            Dim res = Await nx.ShowDialogAsync()
-
-
-            If res <> Wpf.Ui.Controls.MessageBoxResult.Primary Then Return
-
-        End If
+        If Not Await ConfirmUnsavedChangesAsync() Then Return
 
         ' Clear everything
         _suspendTransformMessageHandling = True
@@ -933,6 +951,10 @@ Partial Public Class MainViewModel
         DrawingGroup = New DrawableGroup("Drawing Group")
         DrawableCollection.Add(DrawingGroup)
         ImportedGroups.Add(DrawingGroup)
+
+        ' Undo history belonged to the old workspace
+        _undoRedoService.Clear()
+        _undoRedoService.MarkSaved()
 
         NotifyCollectionsChanged()
         _snackbarService.GenerateSuccess("New Project".LT(), "Workspace cleared".LT())

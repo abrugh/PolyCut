@@ -30,6 +30,24 @@ Public Class UndoRedoService
         End Get
     End Property
 
+    ' Unsaved-changes tracking: the document matches the saved file while the top of the undo stack is the action
+    ' that was on top when it was saved, so undoing back to that point counts as clean again.
+    Private _savedTop As IUndoableAction
+
+    Public Event IsDirtyChanged As EventHandler
+
+    Public ReadOnly Property IsDirty As Boolean
+        Get
+            Dim top = If(_undoStack.Count > 0, _undoStack.Peek(), Nothing)
+            Return top IsNot _savedTop
+        End Get
+    End Property
+
+    Public Sub MarkSaved()
+        _savedTop = If(_undoStack.Count > 0, _undoStack.Peek(), Nothing)
+        RaiseEvent IsDirtyChanged(Me, EventArgs.Empty)
+    End Sub
+
     Public Sub Push(action As IUndoableAction)
         If action Is Nothing Then Return
 
@@ -41,6 +59,7 @@ Public Class UndoRedoService
         _redoStack.Clear()
         RaiseEvent CanUndoChanged(Me, EventArgs.Empty)
         RaiseEvent CanRedoChanged(Me, EventArgs.Empty)
+        RaiseEvent IsDirtyChanged(Me, EventArgs.Empty)
     End Sub
 
     Public Sub Undo()
@@ -57,6 +76,7 @@ Public Class UndoRedoService
         _redoStack.Push(act)
         RaiseEvent CanUndoChanged(Me, EventArgs.Empty)
         RaiseEvent CanRedoChanged(Me, EventArgs.Empty)
+        RaiseEvent IsDirtyChanged(Me, EventArgs.Empty)
     End Sub
 
     Public Sub Redo()
@@ -73,6 +93,7 @@ Public Class UndoRedoService
         _undoStack.Push(act)
         RaiseEvent CanUndoChanged(Me, EventArgs.Empty)
         RaiseEvent CanRedoChanged(Me, EventArgs.Empty)
+        RaiseEvent IsDirtyChanged(Me, EventArgs.Empty)
     End Sub
 
     Public Sub Clear()
@@ -80,6 +101,7 @@ Public Class UndoRedoService
         _redoStack.Clear()
         RaiseEvent CanUndoChanged(Me, EventArgs.Empty)
         RaiseEvent CanRedoChanged(Me, EventArgs.Empty)
+        RaiseEvent IsDirtyChanged(Me, EventArgs.Empty)
     End Sub
 
     Public Sub ExecuteWithoutRecording(action As Action)
