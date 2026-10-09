@@ -138,6 +138,8 @@
 "Show Travel Moves" = "Show Travel Moves"
 "Simplify Toolpaths" = "Simplify Toolpaths"
 "Size in pixels of the local neighbourhood sampled when computing the adaptive threshold (0 = auto). Larger windows average over a bigger area for smoother results; smaller windows react more precisely to local lighting changes." = "Size in pixels of the local neighbourhood sampled when computing the adaptive threshold (0 = auto). Larger windows average over a bigger area for smoother results; smaller windows react more precisely to local lighting changes."
+"Small Feature Passes" = "Small Feature Passes"
+"Small Feature Size" = "Small Feature Size"
 "Space Horizontally by Gap" = "Space Horizontally by Gap"
 "Space Vertically by Gap" = "Space Vertically by Gap"
 "Spacing" = "Spacing"
@@ -343,6 +345,13 @@
 [context."Shading Threshold Tooltip"]
 "How bright an object should be in order to be shaded. 0 = shade all objects, 1 = shade only fully bright objects." = "How bright an object should be in order to be shaded. 0 = shade all objects, 1 = shade only fully bright objects."
 "Range = 0 to 1" = "Range = 0 to 1"
+
+[context."Small Feature Passes Tooltip"]
+"How many times small features are traced. This multiplies with Number of Passes." = "How many times small features are traced. This multiplies with Number of Passes."
+
+[context."Small Feature Size Tooltip"]
+"0 turns this off." = "0 turns this off."
+"Closed shapes that fit inside a square of this size (e.g. small dots and holes) are cut several times in a row without lifting the blade, which gives tiny features a cleaner cut." = "Closed shapes that fit inside a square of this size (e.g. small dots and holes) are cut several times in a row without lifting the blade, which gives tiny features a cleaner cut."
 
 [context."Stacking Mode Tooltip"]
 " NOTE: " = " NOTE: "

@@ -84,6 +84,10 @@ Partial Public Class CuttingConfiguration : Inherits ObservableObject
     <NotifyPropertyChangedFor(NameOf(ToolRadius))>
     <ObservableProperty> Private _ToolDiameter As Double = 0.9
     <ObservableProperty> Private _Overcut As Double = 0
+    ' Closed shapes no bigger than this (bounding box, mm) are traced SmallFeaturePasses times in a row
+    ' without lifting the blade. 0 = off.
+    <ObservableProperty> Private _SmallFeatureSize As Double = 0
+    <ObservableProperty> Private _SmallFeaturePasses As Integer = 2
 
     Public ReadOnly Property ToolRadius
         Get

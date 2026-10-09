@@ -300,6 +300,29 @@
                                 </local:LabeledNumberBoxControl.ToolTip>
                             </local:LabeledNumberBoxControl>
 
+                            <local:LabeledNumberBoxControl LabelText="{loc:T Small Feature Size}"
+                                                           Text="{Binding MainVM.Configuration.CuttingConfig.SmallFeatureSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource UnitConverter}}"
+                                                           TextBoxWidth="120" UnitText="mm">
+                                <local:LabeledNumberBoxControl.ToolTip>
+                                    <TextBlock loc:L.Context="Small Feature Size Tooltip" TextAlignment="Left" TextWrapping="Wrap">
+                                        <Run loc:L.Value="Closed shapes that fit inside a square of this size (e.g. small dots and holes) are cut several times in a row without lifting the blade, which gives tiny features a cleaner cut." />
+                                        <LineBreak />
+                                        <LineBreak />
+                                        <Run loc:L.Value="0 turns this off." />
+                                    </TextBlock>
+                                </local:LabeledNumberBoxControl.ToolTip>
+                            </local:LabeledNumberBoxControl>
+
+                            <local:LabeledNumberBoxControl LabelText="{loc:T Small Feature Passes}"
+                                                           Text="{Binding MainVM.Configuration.CuttingConfig.SmallFeaturePasses, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource UnitConverter}}"
+                                                           TextBoxWidth="120">
+                                <local:LabeledNumberBoxControl.ToolTip>
+                                    <TextBlock loc:L.Context="Small Feature Passes Tooltip" TextAlignment="Left" TextWrapping="Wrap">
+                                        <Run loc:L.Value="How many times small features are traced. This multiplies with Number of Passes." />
+                                    </TextBlock>
+                                </local:LabeledNumberBoxControl.ToolTip>
+                            </local:LabeledNumberBoxControl>
+
 
                         </StackPanel>
                     </ui:CardExpander>

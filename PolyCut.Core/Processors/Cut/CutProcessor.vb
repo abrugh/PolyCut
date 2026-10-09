@@ -31,6 +31,15 @@ Public Class CutProcessor : Implements IProcessor
             ' Step 3: Generate offset arcs for tool radius
             Dim offsetLoop = OffsetGenerator.CreateOffsetArcs(alignedLoop, cfg.CuttingConfig.ToolRadius)
 
+            ' Step 3b: trace small features more than once - the knife stays down between passes since the loop is closed
+            Dim passes = SmallFeaturePassCount(selectedLoop, cfg.CuttingConfig)
+            If passes > 1 Then
+                Dim onePass As New List(Of GeoLine)(offsetLoop)
+                For p = 2 To passes
+                    offsetLoop.AddRange(onePass)
+                Next
+            End If
+
             ' Step 4: Add overcut to close loop cleanly
             Dim overcutLoop = OvercutGenerator.CreateOvercuts(offsetLoop, cfg.CuttingConfig.Overcut)
 
@@ -40,6 +49,24 @@ Public Class CutProcessor : Implements IProcessor
 
         ' Flatten all processed loops into single line list
         Return processedLoops.SelectMany(Function(x) x).ToList()
+    End Function
+
+
+    ''' <summary>How many times to trace a loop: SmallFeaturePasses when its bounding box (before blade offset) fits
+    ''' within SmallFeatureSize in both directions, otherwise 1.</summary>
+    Friend Shared Function SmallFeaturePassCount(loopLines As List(Of GeoLine), cutting As CuttingConfiguration) As Integer
+        If cutting Is Nothing OrElse cutting.SmallFeatureSize <= 0 OrElse cutting.SmallFeaturePasses <= 1 Then Return 1
+        If loopLines Is Nothing OrElse loopLines.Count = 0 Then Return 1
+
+        Dim minX = Double.MaxValue, minY = Double.MaxValue, maxX = Double.MinValue, maxY = Double.MinValue
+        For Each l In loopLines
+            For Each pt In {l.StartPoint, l.EndPoint}
+                minX = Math.Min(minX, pt.X) : maxX = Math.Max(maxX, pt.X)
+                minY = Math.Min(minY, pt.Y) : maxY = Math.Max(maxY, pt.Y)
+            Next
+        Next
+
+        Return If(Math.Max(maxX - minX, maxY - minY) <= cutting.SmallFeatureSize, cutting.SmallFeaturePasses, 1)
     End Function
 
 
