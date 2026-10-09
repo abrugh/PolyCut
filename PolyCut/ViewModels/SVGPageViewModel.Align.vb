@@ -12,10 +12,10 @@ Partial Public Class SVGPageViewModel
 
     Public Enum AlignEdge
         Left
-        CenterHorizontal
+        CenterX     ' same left-right centre: items line up in a column ("Center Vertically" in the UI)
         Right
         Top
-        CenterVertical
+        CenterY     ' same up-down centre: items line up in a row ("Center Horizontally" in the UI)
         Bottom
     End Enum
 
@@ -75,7 +75,7 @@ Partial Public Class SVGPageViewModel
                              Select Case edge
                                  Case AlignEdge.Left : Return New Vector(reference.Left - b.Left, 0)
                                  Case AlignEdge.Right : Return New Vector(reference.Right - b.Right, 0)
-                                 Case AlignEdge.CenterHorizontal : Return New Vector((reference.Left + reference.Width / 2) - (b.Left + b.Width / 2), 0)
+                                 Case AlignEdge.CenterX : Return New Vector((reference.Left + reference.Width / 2) - (b.Left + b.Width / 2), 0)
                                  Case AlignEdge.Top : Return New Vector(0, reference.Top - b.Top)
                                  Case AlignEdge.Bottom : Return New Vector(0, reference.Bottom - b.Bottom)
                                  Case Else : Return New Vector(0, (reference.Top + reference.Height / 2) - (b.Top + b.Height / 2))

@@ -333,6 +333,8 @@
         <KeyBinding Command="{Binding ExportSVGCommand}" Gesture="Ctrl+E" />
         <KeyBinding Command="{Binding BrowseSVGCommand}" Gesture="Ctrl+I" />
         <KeyBinding Command="{Binding SelectAllCommand}" Gesture="Ctrl+A" />
+        <KeyBinding Command="{Binding GroupSelectionCommand}" Gesture="Ctrl+G" />
+        <KeyBinding Command="{Binding UngroupSelectionCommand}" Gesture="Ctrl+Shift+G" />
         <KeyBinding Command="{Binding GenerateGCodeCommand}" Gesture="F5" />
 
         <KeyBinding Command="{Binding MoveSelectedItemsCanvasUpCommand}" Gesture="Ctrl+OemCloseBrackets" />

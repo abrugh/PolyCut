@@ -302,12 +302,15 @@
                         </MenuItem.Header>
                     </MenuItem>
 
+                    <ui:MenuItem x:Name="GroupMenuItem" Header="{loc:T 'Group'}" Icon="{ui:SymbolIcon Symbol=Group20}" Command="{Binding MainVM.GroupSelectionCommand}" InputGestureText="Ctrl+G" loc:L.Context="Group" />
+                    <ui:MenuItem x:Name="UngroupMenuItem" Header="{loc:T 'Ungroup'}" Icon="{ui:SymbolIcon Symbol=GroupDismiss20}" Command="{Binding MainVM.UngroupSelectionCommand}" InputGestureText="Ctrl+Shift+G" loc:L.Context="Group" />
+
                     <ui:MenuItem x:Name="AlignMenuItem" Header="{loc:T 'Align'}" Icon="{ui:SymbolIcon Symbol=AlignLeft20}" loc:L.Context="Align">
                         <ui:MenuItem Header="{loc:T 'Align Left'}" Icon="{ui:SymbolIcon Symbol=AlignLeft20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Left}" loc:L.Context="Align" />
-                        <ui:MenuItem Header="{loc:T 'Center Horizontally'}" Icon="{ui:SymbolIcon Symbol=AlignCenterHorizontal20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterHorizontal}" loc:L.Context="Align" />
+                        <ui:MenuItem Header="{loc:T 'Center Vertically'}" Icon="{ui:SymbolIcon Symbol=AlignCenterVertical20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterX}" loc:L.Context="Align" />
                         <ui:MenuItem Header="{loc:T 'Align Right'}" Icon="{ui:SymbolIcon Symbol=AlignRight20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Right}" loc:L.Context="Align" />
                         <ui:MenuItem Header="{loc:T 'Align Top'}" Icon="{ui:SymbolIcon Symbol=AlignTop20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Top}" loc:L.Context="Align" />
-                        <ui:MenuItem Header="{loc:T 'Center Vertically'}" Icon="{ui:SymbolIcon Symbol=AlignCenterVertical20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterVertical}" loc:L.Context="Align" />
+                        <ui:MenuItem Header="{loc:T 'Center Horizontally'}" Icon="{ui:SymbolIcon Symbol=AlignCenterHorizontal20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterY}" loc:L.Context="Align" />
                         <ui:MenuItem Header="{loc:T 'Align Bottom'}" Icon="{ui:SymbolIcon Symbol=AlignBottom20}" Command="{Binding AlignCommand}" CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Bottom}" loc:L.Context="Align" />
                         <Separator />
                         <ui:MenuItem Header="{loc:T 'Distribute Horizontally'}" Icon="{ui:SymbolIcon Symbol=AlignSpaceEvenlyHorizontal20}" Command="{Binding DistributeHorizontallyCommand}" loc:L.Context="Align" />

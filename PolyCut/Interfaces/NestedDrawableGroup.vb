@@ -112,6 +112,77 @@ Public Class NestedDrawableGroup : Inherits BaseDrawable : Implements IDrawable
     End Function
 
 
+    ' ---- User grouping (GroupDrawablesAction / UngroupDrawablesAction) ----
+
+    ''' <summary>Wraps each drawable at its group-local placement inside the inner canvas and makes it a child of
+    ''' this group. The caller sizes/positions the group's own element and puts it on the canvas.</summary>
+    Friend Sub AttachChildren(children As IEnumerable(Of (Drawable As IDrawable, LocalState As TransformState)), nativeSize As Size)
+        Dim style As Style = TryCast(Application.Current?.TryFindResource("DesignerItemStyle"), Style)
+        Dim wrappers As New List(Of ContentControl)
+
+        _innerCanvas.Children.Clear()
+        BeginBulkChildUpdate()
+        Try
+            For Each c In children
+                Dim fe = TryCast(c.Drawable?.DrawableElement, FrameworkElement)
+                If fe Is Nothing Then Continue For
+
+                ' CreateWrapper sizes and places the wrapper from the element
+                fe.Width = c.LocalState.Width
+                fe.Height = c.LocalState.Height
+                Canvas.SetLeft(fe, c.LocalState.Translation.X)
+                Canvas.SetTop(fe, c.LocalState.Translation.Y)
+
+                Dim w = DrawableWrapperFactory.CreateWrapper(fe, c.Drawable, style)
+                If w Is Nothing Then Continue For
+                c.LocalState.ApplyToWrapper(w)
+                If w.RenderTransform Is Nothing Then w.RenderTransform = New RotateTransform(0)
+                w.IsHitTestVisible = False
+
+                wrappers.Add(w)
+                AddChild(c.Drawable)
+            Next
+        Finally
+            EndBulkChildUpdate()
+        End Try
+
+        AddPartitionedWrappers(_innerCanvas, wrappers)
+        _innerCanvas.Width = nativeSize.Width
+        _innerCanvas.Height = nativeSize.Height
+    End Sub
+
+    ''' <summary>Takes every child out of the group: removes its wrapper from the inner canvas, frees the element
+    ''' for re-wrapping and returns each child's group-local placement (cell offsets folded in).</summary>
+    Friend Function DetachChildren() As List(Of (Drawable As IDrawable, LocalState As TransformState))
+        Dim result As New List(Of (Drawable As IDrawable, LocalState As TransformState))
+
+        For Each child In GroupChildren.ToList()
+            Dim fe = TryCast(child?.DrawableElement, FrameworkElement)
+            Dim w = TryCast(fe?.Parent, ContentControl)
+            Dim st As TransformState
+
+            If w IsNot Nothing Then
+                st = TransformState.FromWrapper(w)
+                Dim host = TryCast(w.Parent, Canvas)
+                If host IsNot Nothing AndAlso host IsNot _innerCanvas Then
+                    st.Translation = New Point(st.Translation.X + GetLeftSafe(host), st.Translation.Y + GetTopSafe(host))
+                End If
+                host?.Children.Remove(w)
+                w.Content = Nothing
+            Else
+                st = New TransformState(New Point(GetLeftSafe(fe), GetTopSafe(fe)), 0, New Point(1, 1), New Point(0.5, 0.5)) With {
+                    .Width = GetWidthSafe(fe), .Height = GetHeightSafe(fe)}
+            End If
+
+            RemoveChild(child)
+            result.Add((child, st))
+        Next
+
+        _innerCanvas.Children.Clear()
+        Return result
+    End Function
+
+
     Private Sub OnGroupChildrenChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
         If _suspendChildNotifications Then Return
 

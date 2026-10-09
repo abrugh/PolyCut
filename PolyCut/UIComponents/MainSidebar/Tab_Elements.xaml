@@ -344,6 +344,31 @@
 
             <ui:DropDownButton Grid.Column="1"
                                Width="65" Height="40"
+                               Margin="85 0 0 0" Padding="0" HorizontalAlignment="Left"
+                               Background="Transparent" BorderThickness="0">
+                <ui:DropDownButton.ToolTip>
+                    <TextBlock loc:L.Context="Group" loc:L.Value="Group items so they move together (Ctrl+G), or split a group (Ctrl+Shift+G)" />
+                </ui:DropDownButton.ToolTip>
+                <ui:DropDownButton.Content>
+                    <StackPanel Orientation="Vertical">
+                        <ui:SymbolIcon FontSize="16" Symbol="Group20" />
+                        <TextBlock loc:L.Value="Group" FontSize="9" />
+                    </StackPanel>
+                </ui:DropDownButton.Content>
+                <ui:DropDownButton.Flyout>
+                    <ContextMenu>
+                        <MenuItem loc:L.Context="Group" loc:L.Value="Group" InputGestureText="Ctrl+G"
+                                  Command="{Binding MainVM.GroupSelectionCommand}"
+                                  Icon="{ui:SymbolIcon Symbol=Group20}" />
+                        <MenuItem loc:L.Context="Group" loc:L.Value="Ungroup" InputGestureText="Ctrl+Shift+G"
+                                  Command="{Binding MainVM.UngroupSelectionCommand}"
+                                  Icon="{ui:SymbolIcon Symbol=GroupDismiss20}" />
+                    </ContextMenu>
+                </ui:DropDownButton.Flyout>
+            </ui:DropDownButton>
+
+            <ui:DropDownButton Grid.Column="1"
+                               Width="65" Height="40"
                                Margin="10 0 0 0" Padding="0" HorizontalAlignment="Left"
                                Background="Transparent" BorderThickness="0">
                 <ui:DropDownButton.ToolTip>
@@ -362,10 +387,10 @@
                                   Command="{Binding AlignCommand}"
                                   CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Left}"
                                   Icon="{ui:SymbolIcon Symbol=AlignLeft20}" />
-                        <MenuItem loc:L.Context="Align" loc:L.Value="Center Horizontally"
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Center Vertically"
                                   Command="{Binding AlignCommand}"
-                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterHorizontal}"
-                                  Icon="{ui:SymbolIcon Symbol=AlignCenterHorizontal20}" />
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterX}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignCenterVertical20}" />
                         <MenuItem loc:L.Context="Align" loc:L.Value="Align Right"
                                   Command="{Binding AlignCommand}"
                                   CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Right}"
@@ -374,10 +399,10 @@
                                   Command="{Binding AlignCommand}"
                                   CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Top}"
                                   Icon="{ui:SymbolIcon Symbol=AlignTop20}" />
-                        <MenuItem loc:L.Context="Align" loc:L.Value="Center Vertically"
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Center Horizontally"
                                   Command="{Binding AlignCommand}"
-                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterVertical}"
-                                  Icon="{ui:SymbolIcon Symbol=AlignCenterVertical20}" />
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterY}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignCenterHorizontal20}" />
                         <MenuItem loc:L.Context="Align" loc:L.Value="Align Bottom"
                                   Command="{Binding AlignCommand}"
                                   CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Bottom}"

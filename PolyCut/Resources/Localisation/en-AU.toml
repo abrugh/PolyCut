@@ -75,6 +75,7 @@
 "Global Settings" = "Global Settings"
 "Grid Settings" = "Grid Settings"
 "Gridline Colour" = "Gridline Colour"
+"Group" = "Group"
 "Ignore Canvas Bounds" = "Ignore Canvas Bounds"
 "Ignores the bounds of the canvas when processing geometry. This can allow generation of negative GCode!" = "Ignores the bounds of the canvas when processing geometry. This can allow generation of negative GCode!"
 "Import as SVG" = "Import as SVG"
@@ -159,6 +160,7 @@
 "Travel Line Colour" = "Travel Line Colour"
 "Travel Speed" = "Travel Speed"
 "UI Language" = "UI Language"
+"Ungroup" = "Ungroup"
 "Union operation resulted in an empty geometry. This should not happen." = "Union operation resulted in an empty geometry. This should not happen."
 "Unknown SVG Unit Type: " = "Unknown SVG Unit Type: "
 "Update Available ▸ Version {0}" = "Update Available ▸ Version {0}"
@@ -272,6 +274,11 @@
 
 [context."Grid Settings"]
 "Canvas Color" = "Canvas Color"
+
+[context."Group"]
+"Group" = "Group"
+"Group items so they move together (Ctrl+G), or split a group (Ctrl+Shift+G)" = "Group items so they move together (Ctrl+G), or split a group (Ctrl+Shift+G)"
+"Ungroup" = "Ungroup"
 
 [context."Home Tab"]
 "Home" = "Home"

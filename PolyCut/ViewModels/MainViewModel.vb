@@ -171,6 +171,16 @@ Partial Public Class MainViewModel
         BooleanOperation(GeometryCombineMode.Xor)
     End Sub
 
+    <RelayCommand> Public Sub GroupSelection()
+        Dim action As New GroupDrawablesAction(Me, SelectedDrawables.ToList())
+        If action.Execute() Then _undoRedoService.Push(action)
+    End Sub
+
+    <RelayCommand> Public Sub UngroupSelection()
+        Dim action As New UngroupDrawablesAction(Me, SelectedDrawables.ToList())
+        If action.Execute() Then _undoRedoService.Push(action)
+    End Sub
+
     <RelayCommand> Public Sub Undo()
         _undoRedoService.Undo()
     End Sub

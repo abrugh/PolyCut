@@ -75,6 +75,7 @@
 "Global Settings" = "Paramètres généraux"
 "Grid Settings" = "Paramètres de la grille"
 "Gridline Colour" = "Couleur des lignes de la grille"
+"Group" = "Group" # LOC:TODO
 "Ignore Canvas Bounds" = "Ignore Canvas Bounds" # LOC:TODO
 "Ignores the bounds of the canvas when processing geometry. This can allow generation of negative GCode!" = "Ignores the bounds of the canvas when processing geometry. This can allow generation of negative GCode!" # LOC:TODO
 "Import as SVG" = "Importer comme SVG"
@@ -159,6 +160,7 @@
 "Travel Line Colour" = "Couleur des lignes de déplacement"
 "Travel Speed" = "Vitesse de déplacement"
 "UI Language" = "Langue de l’interface"
+"Ungroup" = "Ungroup" # LOC:TODO
 "Union operation resulted in an empty geometry. This should not happen." = "L’union a produit une géométrie vide. Cela ne devrait pas se produire."
 "Unknown SVG Unit Type: " = "Type d’unité SVG inconnu : "
 "Update Available ▸ Version {0}" = "Mise à jour disponible ▸ Version {0}"
@@ -272,6 +274,11 @@
 
 [context."Grid Settings"]
 "Canvas Color" = "Couleur du canevas"
+
+[context."Group"]
+"Group" = "Group" # LOC:TODO
+"Group items so they move together (Ctrl+G), or split a group (Ctrl+Shift+G)" = "Group items so they move together (Ctrl+G), or split a group (Ctrl+Shift+G)" # LOC:TODO
+"Ungroup" = "Ungroup" # LOC:TODO
 
 [context."Home Tab"]
 "Home" = "Accueil"
