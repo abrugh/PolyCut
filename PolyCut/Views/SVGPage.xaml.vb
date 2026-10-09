@@ -260,6 +260,7 @@ Class SVGPage
         CombineMenuItem.Visibility = If(hasMultiSelection, Visibility.Visible, Visibility.Collapsed)
         StyleMenuItem.Visibility = If(hasSelection, Visibility.Visible, Visibility.Collapsed)
         ArrangeMenuItem.Visibility = If(hasSelection, Visibility.Visible, Visibility.Collapsed)
+        AlignMenuItem.Visibility = If(hasSelection, Visibility.Visible, Visibility.Collapsed)
         CanvasContextMenuSeparator.Visibility = If(hasSelection, Visibility.Visible, Visibility.Collapsed)
         ZoomMenuItem.Visibility = If(hasSelection, Visibility.Collapsed, Visibility.Visible)
 

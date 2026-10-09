@@ -11,6 +11,11 @@
 "Adaptive Sampling Window" = "Fenêtre d’échantillonnage adaptatif"
 "Add Printer" = "Ajouter une imprimante"
 "Added Preset" = "Préréglage ajouté"
+"Align" = "Align" # LOC:TODO
+"Align Bottom" = "Align Bottom" # LOC:TODO
+"Align Left" = "Align Left" # LOC:TODO
+"Align Right" = "Align Right" # LOC:TODO
+"Align Top" = "Align Top" # LOC:TODO
 "Alignment" = "Alignement"
 "Allow Travel in Outlines" = "Autoriser les déplacements dans les contours"
 "An unknown error occurred" = "Une erreur inconnue s’est produite"
@@ -23,6 +28,8 @@
 "Cancel Preview" = "Annuler l’aperçu"
 "Cannot perform boolean operations on open paths (Lines). All shapes must be closed." = "Impossible d’effectuer des opérations booléennes sur des tracés ouverts (lignes). Toutes les formes doivent être fermées."
 "Cannot perform boolean operations on open paths. All shapes must be closed." = "Impossible d’effectuer des opérations booléennes sur des tracés ouverts. Toutes les formes doivent être fermées."
+"Center Horizontally" = "Center Horizontally" # LOC:TODO
+"Center Vertically" = "Center Vertically" # LOC:TODO
 "Cleans up toolpaths by merging extremely close vertices, fragments, and almost-collinear segments." = "Cleans up toolpaths by merging extremely close vertices, fragments, and almost-collinear segments." # LOC:TODO
 "Click to view release notes and download" = "Cliquer pour afficher les notes de version et télécharger"
 "Clip Geometry to Canvas" = "Clip Geometry to Canvas" # LOC:TODO
@@ -40,6 +47,8 @@
 "Darkest shading spacing" = "Espacement des hachures les plus sombres"
 "Delete" = "Supprimer"
 "Discards detected patches smaller than this many pixels, 0-128. Increase this to clean up small stray specks and noise left over from tracing; decrease it to preserve fine detail." = "Ignore les zones détectées plus petites que ce nombre de pixels, de 0 à 128. Augmentez cette valeur pour supprimer les petites taches et le bruit résiduel après vectorisation ; diminuez-la pour préserver les détails fins."
+"Distribute Horizontally" = "Distribute Horizontally" # LOC:TODO
+"Distribute Vertically" = "Distribute Vertically" # LOC:TODO
 "Draw Outlines Before Fill" = "Tracer les contours avant le remplissage"
 "Drawing Group is already empty" = "Le groupe de dessin est déjà vide"
 "Drawing Line Colour" = "Couleur des lignes de dessin"
@@ -128,6 +137,8 @@
 "Show Travel Moves" = "Afficher les déplacements"
 "Simplify Toolpaths" = "Simplify Toolpaths" # LOC:TODO
 "Size in pixels of the local neighbourhood sampled when computing the adaptive threshold (0 = auto). Larger windows average over a bigger area for smoother results; smaller windows react more precisely to local lighting changes." = "Taille en pixels du voisinage local échantillonné lors du calcul du seuil adaptatif (0 = auto). Les grandes fenêtres font la moyenne sur une zone plus large pour des résultats plus lisses ; les petites fenêtres réagissent plus précisément aux variations locales d’éclairage."
+"Space Horizontally by Gap" = "Space Horizontally by Gap" # LOC:TODO
+"Space Vertically by Gap" = "Space Vertically by Gap" # LOC:TODO
 "Spacing" = "Espacement"
 "Speckle Filtering" = "Filtrage des petites taches"
 "Stacking" = "Empilement"
@@ -175,6 +186,20 @@
 
 [context."3D Printer/Machine"]
 "Printer" = "Imprimante"
+
+[context."Align"]
+"Align Bottom" = "Align Bottom" # LOC:TODO
+"Align Left" = "Align Left" # LOC:TODO
+"Align Right" = "Align Right" # LOC:TODO
+"Align Top" = "Align Top" # LOC:TODO
+"Align and space the selection (one item: to the sheet)" = "Align and space the selection (one item: to the sheet)" # LOC:TODO
+"Center Horizontally" = "Center Horizontally" # LOC:TODO
+"Center Vertically" = "Center Vertically" # LOC:TODO
+"Distribute Horizontally" = "Distribute Horizontally" # LOC:TODO
+"Distribute Vertically" = "Distribute Vertically" # LOC:TODO
+"Gap (mm)" = "Gap (mm)" # LOC:TODO
+"Space Horizontally by Gap" = "Space Horizontally by Gap" # LOC:TODO
+"Space Vertically by Gap" = "Space Vertically by Gap" # LOC:TODO
 
 [context."Allow Travel in Outlines Tooltip"]
 "Allows the pen to travel through shape outlines without lifting the pen up to start the next line." = "Permet au stylo de se déplacer à travers les contours des formes sans être relevé avant de commencer la ligne suivante."

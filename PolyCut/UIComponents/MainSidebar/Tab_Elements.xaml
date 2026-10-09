@@ -342,6 +342,74 @@
 
             </ui:Button>
 
+            <ui:DropDownButton Grid.Column="1"
+                               Width="65" Height="40"
+                               Margin="10 0 0 0" Padding="0" HorizontalAlignment="Left"
+                               Background="Transparent" BorderThickness="0">
+                <ui:DropDownButton.ToolTip>
+                    <TextBlock loc:L.Context="Align" loc:L.Value="Align and space the selection (one item: to the sheet)" />
+                </ui:DropDownButton.ToolTip>
+                <ui:DropDownButton.Content>
+                    <StackPanel Orientation="Vertical">
+                        <ui:SymbolIcon FontSize="16" Symbol="AlignLeft20" />
+                        <TextBlock loc:L.Value="Align" FontSize="9" />
+                    </StackPanel>
+                </ui:DropDownButton.Content>
+
+                <ui:DropDownButton.Flyout>
+                    <ContextMenu>
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Align Left"
+                                  Command="{Binding AlignCommand}"
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Left}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignLeft20}" />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Center Horizontally"
+                                  Command="{Binding AlignCommand}"
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterHorizontal}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignCenterHorizontal20}" />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Align Right"
+                                  Command="{Binding AlignCommand}"
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Right}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignRight20}" />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Align Top"
+                                  Command="{Binding AlignCommand}"
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Top}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignTop20}" />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Center Vertically"
+                                  Command="{Binding AlignCommand}"
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.CenterVertical}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignCenterVertical20}" />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Align Bottom"
+                                  Command="{Binding AlignCommand}"
+                                  CommandParameter="{x:Static local:SVGPageViewModel+AlignEdge.Bottom}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignBottom20}" />
+                        <Separator />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Distribute Horizontally"
+                                  Command="{Binding DistributeHorizontallyCommand}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignSpaceEvenlyHorizontal20}" />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Distribute Vertically"
+                                  Command="{Binding DistributeVerticallyCommand}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignSpaceEvenlyVertical20}" />
+                        <Separator />
+                        <MenuItem StaysOpenOnClick="True" Focusable="False">
+                            <MenuItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="0 0 8 0" VerticalAlignment="Center" loc:L.Context="Align" loc:L.Value="Gap (mm)" />
+                                    <TextBox Width="60"
+                                             Text="{Binding DistributeGap, Mode=TwoWay, Converter={StaticResource UnitConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Space Horizontally by Gap"
+                                  Command="{Binding DistributeGapHorizontallyCommand}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignSpaceBetweenVertical20}" />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Space Vertically by Gap"
+                                  Command="{Binding DistributeGapVerticallyCommand}"
+                                  Icon="{ui:SymbolIcon Symbol=AlignSpaceBetweenHorizontal20}" />
+                    </ContextMenu>
+                </ui:DropDownButton.Flyout>
+
+            </ui:DropDownButton>
+
             <ui:DropDownButton Grid.Column="0"
                                Width="65" Height="40"
                                Padding="0"

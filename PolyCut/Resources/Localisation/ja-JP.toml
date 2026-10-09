@@ -11,6 +11,11 @@
 "Adaptive Sampling Window" = "適応サンプリング範囲"
 "Add Printer" = "プリンターを追加"
 "Added Preset" = "プリセットを追加しました"
+"Align" = "Align" # LOC:TODO
+"Align Bottom" = "Align Bottom" # LOC:TODO
+"Align Left" = "Align Left" # LOC:TODO
+"Align Right" = "Align Right" # LOC:TODO
+"Align Top" = "Align Top" # LOC:TODO
 "Alignment" = "配置"
 "Allow Travel in Outlines" = "輪郭内の移動を許可"
 "An unknown error occurred" = "不明なエラーが発生しました"
@@ -23,6 +28,8 @@
 "Cancel Preview" = "プレビューをキャンセル"
 "Cannot perform boolean operations on open paths (Lines). All shapes must be closed." = "開いたパス（線）にはブール演算を実行できません。すべての形状を閉じる必要があります。"
 "Cannot perform boolean operations on open paths. All shapes must be closed." = "開いたパスにはブール演算を実行できません。すべての形状を閉じる必要があります。"
+"Center Horizontally" = "Center Horizontally" # LOC:TODO
+"Center Vertically" = "Center Vertically" # LOC:TODO
 "Cleans up toolpaths by merging extremely close vertices, fragments, and almost-collinear segments." = "Cleans up toolpaths by merging extremely close vertices, fragments, and almost-collinear segments." # LOC:TODO
 "Click to view release notes and download" = "クリックしてリリースノートを表示し、ダウンロード"
 "Clip Geometry to Canvas" = "Clip Geometry to Canvas" # LOC:TODO
@@ -40,6 +47,8 @@
 "Darkest shading spacing" = "最暗部のシェーディング間隔"
 "Delete" = "削除"
 "Discards detected patches smaller than this many pixels, 0-128. Increase this to clean up small stray specks and noise left over from tracing; decrease it to preserve fine detail." = "検出されたパッチのうち、このピクセル数未満のものを破棄します（0～128）。値を大きくするとトレース後に残る小さな点やノイズを除去しやすくなり、値を小さくすると細部を保持できます。"
+"Distribute Horizontally" = "Distribute Horizontally" # LOC:TODO
+"Distribute Vertically" = "Distribute Vertically" # LOC:TODO
 "Draw Outlines Before Fill" = "塗りつぶし前に輪郭を描画"
 "Drawing Group is already empty" = "描画グループは既に空です"
 "Drawing Line Colour" = "描画線の色"
@@ -128,6 +137,8 @@
 "Show Travel Moves" = "移動動作を表示"
 "Simplify Toolpaths" = "Simplify Toolpaths" # LOC:TODO
 "Size in pixels of the local neighbourhood sampled when computing the adaptive threshold (0 = auto). Larger windows average over a bigger area for smoother results; smaller windows react more precisely to local lighting changes." = "適応しきい値を計算するときにサンプリングする局所近傍の大きさ（ピクセル、0 = 自動）。大きい範囲では広い領域を平均化して滑らかな結果になり、小さい範囲では局所的な照明変化により正確に反応します。"
+"Space Horizontally by Gap" = "Space Horizontally by Gap" # LOC:TODO
+"Space Vertically by Gap" = "Space Vertically by Gap" # LOC:TODO
 "Spacing" = "間隔"
 "Speckle Filtering" = "微小ノイズ除去"
 "Stacking" = "積み重ね"
@@ -175,6 +186,20 @@
 
 [context."3D Printer/Machine"]
 "Printer" = "プリンター"
+
+[context."Align"]
+"Align Bottom" = "Align Bottom" # LOC:TODO
+"Align Left" = "Align Left" # LOC:TODO
+"Align Right" = "Align Right" # LOC:TODO
+"Align Top" = "Align Top" # LOC:TODO
+"Align and space the selection (one item: to the sheet)" = "Align and space the selection (one item: to the sheet)" # LOC:TODO
+"Center Horizontally" = "Center Horizontally" # LOC:TODO
+"Center Vertically" = "Center Vertically" # LOC:TODO
+"Distribute Horizontally" = "Distribute Horizontally" # LOC:TODO
+"Distribute Vertically" = "Distribute Vertically" # LOC:TODO
+"Gap (mm)" = "Gap (mm)" # LOC:TODO
+"Space Horizontally by Gap" = "Space Horizontally by Gap" # LOC:TODO
+"Space Vertically by Gap" = "Space Vertically by Gap" # LOC:TODO
 
 [context."Allow Travel in Outlines Tooltip"]
 "Allows the pen to travel through shape outlines without lifting the pen up to start the next line." = "次の線を開始する前にペンを持ち上げることなく、形状の輪郭を横切って移動できるようにします。"
