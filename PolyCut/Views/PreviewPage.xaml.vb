@@ -37,6 +37,7 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
         End If
 
         AddHandler viewmodel.UIConfiguration.PropertyChanged, AddressOf UIConfigChangedHandler
+        _scrubReady = True
     End Sub
 
     Sub OnLoaded() Handles Me.Loaded
@@ -164,26 +165,123 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
             TogglePlayPauseSymbol()
 
         Else
-            _IsPlaying = True
+            Await StartPlayback(startPaused:=False)
+        End If
+    End Sub
+
+    Private Async Function StartPlayback(startPaused As Boolean) As Task
+        _IsPlaying = True
+        _IsPaused = startPaused
+        _pauseTcs = Nothing
+        TogglePlayPauseSymbol()
+
+        Try
+
+            Await cancellationTokenSource.CancelAsync()
+
+            cancellationTokenSource = New CancellationTokenSource
+            Dim ret = Await PreviewToolpaths(cancellationTokenSource.Token)
+
+        Finally
+            _IsPlaying = False
             _IsPaused = False
             _pauseTcs = Nothing
             TogglePlayPauseSymbol()
 
-            Try
+        End Try
+    End Function
 
-                Await cancellationTokenSource.CancelAsync()
 
-                cancellationTokenSource = New CancellationTokenSource
-                Dim ret = Await PreviewToolpaths(cancellationTokenSource.Token)
+    ' ---- Scrub slider: drag to any point of the toolpath; playback continues from there ----
 
-            Finally
-                _IsPlaying = False
-                _IsPaused = False
-                _pauseTcs = Nothing
+    Private _seekTarget As Integer = -1      ' move index requested by the slider (-1 = none), consumed by the playback loop
+    Private _updatingScrub As Boolean        ' code (not the user) is moving the slider
+    Private _scrubReady As Boolean
+    Private _lastScrubSync As Long
+    Private ReadOnly _chunkGeometryCache As New Dictionary(Of Integer, (Cut As StreamGeometry, AnyCut As Boolean, Travel As StreamGeometry, AnyTravel As Boolean))
+
+    Private Async Sub ScrubSlider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
+        If Not _scrubReady OrElse _updatingScrub Then Return
+        Dim paths = ViewModel?.GCodeGeometry?.Paths
+        If paths Is Nothing OrElse paths.Count = 0 Then Return
+
+        Dim target = CInt(Math.Round(e.NewValue))
+        UpdateScrubLabel(target, paths.Count)
+        Interlocked.Exchange(_seekTarget, target)
+
+        If _IsPlaying Then
+            If Not _IsPaused Then
+                _IsPaused = True
                 TogglePlayPauseSymbol()
-
-            End Try
+            End If
+            _pauseTcs?.TrySetResult(True)
+        Else
+            Await StartPlayback(startPaused:=True)
         End If
+    End Sub
+
+    Private Sub UpdateScrubLabel(index As Integer, total As Integer)
+        If ScrubLabel Is Nothing Then Return
+        ScrubLabel.Text = $"{index:N0} / {total:N0}"
+    End Sub
+
+    ''' <summary>Moves the slider to show playback progress. Throttled unless forced.</summary>
+    Private Sub SyncScrub(index As Integer, Optional force As Boolean = False)
+        If ScrubSlider Is Nothing Then Return
+        Dim now = Environment.TickCount64
+        If Not force AndAlso now - _lastScrubSync < 40 Then Return
+        _lastScrubSync = now
+
+        _updatingScrub = True
+        Try
+            ScrubSlider.Value = index
+        Finally
+            _updatingScrub = False
+        End Try
+        UpdateScrubLabel(index, CInt(ScrubSlider.Maximum))
+    End Sub
+
+    Private Sub ResetScrub(total As Integer)
+        If ScrubSlider Is Nothing Then Return
+        _updatingScrub = True
+        Try
+            ScrubSlider.Maximum = Math.Max(1, total)
+            ScrubSlider.Value = ScrubSlider.Maximum      ' still view = whole path
+        Finally
+            _updatingScrub = False
+        End Try
+        UpdateScrubLabel(total, total)
+    End Sub
+
+    ''' <summary>Rebuilds the playback picture with exactly the first <paramref name="target"/> moves drawn.</summary>
+    Private Sub RebuildPlaybackAt(target As Integer, paths As IReadOnlyList(Of GCodeLine))
+        target = Math.Max(0, Math.Min(target, paths.Count))
+
+        visualHost.ClearVisuals()
+        travelMoveVisuals.Clear()
+        _folded.Clear()
+        For i = 0 To _lineVisuals.Count - 1
+            _lineVisuals(i) = Nothing
+        Next
+
+        Dim fullChunks = target \ PlaybackChunk
+        For c = 0 To fullChunks - 1
+            FoldChunk(c, paths)
+        Next
+        _nextFold = fullChunks
+
+        _currentIndex = fullChunks * PlaybackChunk
+        While _currentIndex < target
+            DrawLineInstant(paths(_currentIndex))
+            _currentIndex += 1
+        End While
+
+        If target > 0 Then
+            UpdateCursor(New Point(paths(target - 1).X2, paths(target - 1).Y2))
+        Else
+            UpdateCursor(New Point(paths(0).X1, paths(0).Y1))
+        End If
+        SyncScrub(_currentIndex, force:=True)
     End Sub
 
     Private Sub StopPreviewToolpath(sender As Object, e As RoutedEventArgs)
@@ -349,6 +447,9 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
         End If
         Dim gc = ViewModel.GCodeGeometry
 
+        _chunkGeometryCache.Clear()
+        ResetScrub(gc.Paths.Count)
+
         DrawChunkedStatic(gc.Paths)
 
         ApplyToolpathCache()
@@ -449,6 +550,13 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
             ' --------- PAUSE GATE BEFORE STARTING THE LINE ----------
             While _IsPaused
 
+                ' 0) Jump to where the scrub slider was dropped
+                Dim seek = Interlocked.Exchange(_seekTarget, -1)
+                If seek >= 0 Then
+                    RebuildPlaybackAt(seek, paths)
+                    Continue While
+                End If
+
                 ' 1) Apply ALL queued step-backs
                 Dim backCount = Interlocked.Exchange(_stepBackCount, 0)
                 If backCount > 0 Then
@@ -460,6 +568,7 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
                         Dim ln2 = paths(_currentIndex)
                         UpdateCursor(New Point(ln2.X1, ln2.Y1))
                     Next
+                    SyncScrub(_currentIndex, force:=True)
                     Continue While
                 End If
 
@@ -473,6 +582,7 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
                     End While
 
                     ' stay paused after stepping
+                    SyncScrub(_currentIndex, force:=True)
                     Continue While
                 End If
 
@@ -488,6 +598,7 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
             End While
 
             If cToken.IsCancellationRequested Then Return 1
+            If _currentIndex >= paths.Count Then Exit While   ' scrubbed or stepped to the very end
 
             ' --------- DRAW CURRENT LINE (_currentIndex) ----------
             Dim line = paths(_currentIndex)
@@ -521,6 +632,15 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
 
                 ' --------- SEGMENT PAUSE GATE (pause can happen mid-line) ----------
                 While _IsPaused
+
+                    ' Scrubbed while paused mid-line: drop the partial line and jump
+                    Dim seek2 = Interlocked.Exchange(_seekTarget, -1)
+                    If seek2 >= 0 Then
+                        RemoveLineVisual(_currentIndex)
+                        RebuildPlaybackAt(seek2, paths)
+                        restartOuter = True
+                        Exit For
+                    End If
 
                     ' Step Back during partial line: delete current line visual, then move back
                     Dim backCount2 = Interlocked.Exchange(_stepBackCount, 0)
@@ -609,11 +729,13 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
             Next
 
             If restartOuter Then
+                SyncScrub(_currentIndex, force:=True)
                 Continue While ' resume from new _currentIndex
             End If
 
             ' finished the line
             _currentIndex += 1
+            SyncScrub(_currentIndex)
 
 
         End While
@@ -665,19 +787,27 @@ Class PreviewPage : Implements INavigableView(Of MainViewModel)
         Dim toIndex As Integer = Math.Min(fromIndex + PlaybackChunk, paths.Count) - 1
         If fromIndex > toIndex Then Return
 
-        Dim cut As New StreamGeometry()
-        Dim anyCut As Boolean = False
-        Using ctx = cut.Open()
-            AppendRun(ctx, paths, fromIndex, toIndex, False, anyCut)
-        End Using
-        cut.Freeze()
+        ' Frozen geometry per chunk is reused, so scrubbing back and forth doesn't rebuild it every time
+        Dim geo As (Cut As StreamGeometry, AnyCut As Boolean, Travel As StreamGeometry, AnyTravel As Boolean)
+        If Not _chunkGeometryCache.TryGetValue(chunk, geo) Then
+            Dim cutGeo As New StreamGeometry()
+            Dim anyCutGeo As Boolean = False
+            Using ctx = cutGeo.Open()
+                AppendRun(ctx, paths, fromIndex, toIndex, False, anyCutGeo)
+            End Using
+            cutGeo.Freeze()
 
-        Dim travel As New StreamGeometry()
-        Dim anyTravel As Boolean = False
-        Using ctx = travel.Open()
-            AppendRun(ctx, paths, fromIndex, toIndex, True, anyTravel)
-        End Using
-        travel.Freeze()
+            Dim travelGeo As New StreamGeometry()
+            Dim anyTravelGeo As Boolean = False
+            Using ctx = travelGeo.Open()
+                AppendRun(ctx, paths, fromIndex, toIndex, True, anyTravelGeo)
+            End Using
+            travelGeo.Freeze()
+
+            geo = (cutGeo, anyCutGeo, travelGeo, anyTravelGeo)
+            _chunkGeometryCache(chunk) = geo
+        End If
+        Dim cut = geo.Cut, anyCut = geo.AnyCut, travel = geo.Travel, anyTravel = geo.AnyTravel
 
         Dim visuals As New List(Of DrawingVisual)()
 
