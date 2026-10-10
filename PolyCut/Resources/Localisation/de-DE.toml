@@ -36,6 +36,7 @@
 "Clip Geometry to Canvas" = "Clip Geometry to Canvas" # LOC:TODO
 "Clips the geometry to the bounds of the canvas" = "Clips the geometry to the bounds of the canvas" # LOC:TODO
 "Close" = "Schließen"
+"Columns" = "Columns" # LOC:TODO
 "Combine" = "Kombinieren"
 "Combine Shapes" = "Formen kombinieren"
 "Copy" = "Kopieren"
@@ -43,6 +44,7 @@
 "Curve simplification tolerance in pixels (try 0.5-2.5). Higher values simplify more aggressively at the cost of precision." = "Toleranz für die Kurvenvereinfachung in Pixeln (versuchen Sie 0,5–2,5). Höhere Werte vereinfachen stärker, gehen jedoch zulasten der Genauigkeit."
 "Curve-fitting Precision" = "Kurvenanpassungsgenauigkeit"
 "Cut" = "Schneiden"
+"Cut a box around each tile" = "Cut a box around each tile" # LOC:TODO
 "Cut level for the hierarchical watershed algorithm, 0-255. Higher values cut the region hierarchy at a finer level, producing more, smaller regions that follow content detail closely; lower values merge areas into fewer, larger regions." = "Schnittebene des hierarchischen Watershed-Algorithmus, 0–255. Höhere Werte schneiden die Regionshierarchie feiner und erzeugen mehr, kleinere Regionen, die den Inhaltsdetails genauer folgen; niedrigere Werte führen Bereiche zu weniger, größeren Regionen zusammen."
 "Darkest shading spacing" = "Abstand der dunkelsten Schraffur"
 "Delete" = "Löschen"
@@ -72,6 +74,7 @@
 "Finish Import" = "Import abschließen"
 "Fixed brightness cutoff (0-255) used for Black & White mode. Pixels darker than this value become foreground (black); pixels at or above it become background (white). Ignored when Adaptive Sampling is enabled." = "Fester Helligkeitsgrenzwert (0–255) für den Schwarzweißmodus. Pixel, die dunkler als dieser Wert sind, werden zum Vordergrund (schwarz); Pixel mit diesem oder einem höheren Wert werden zum Hintergrund (weiß). Wird ignoriert, wenn die adaptive Abtastung aktiviert ist."
 "GCode" = "GCode"
+"Gap" = "Gap" # LOC:TODO
 "Generate GCode" = "GCode erzeugen"
 "Global Settings" = "Allgemeine Einstellungen"
 "Grid Settings" = "Rastereinstellungen"
@@ -117,6 +120,7 @@
 "Region Detection Settings" = "Einstellungen der Regionserkennung"
 "Reload Languages. Checks online for updated language definitions" = "Reload Languages. Checks online for updated language definitions" # LOC:TODO
 "Rotation" = "Drehung"
+"Rows" = "Rows" # LOC:TODO
 "SVG Exported" = "SVG exportiert"
 "S_ave As..." = "Speichern _unter..."
 "Save" = "Save" # LOC:TODO
@@ -153,6 +157,9 @@
 "Sucessfully uploaded {0} to Moonraker" = "{0} wurde erfolgreich zu Moonraker hochgeladen"
 "The host could not be found" = "Der Host konnte nicht gefunden werden"
 "Threshold" = "Grenzwert"
+"Tile" = "Tile" # LOC:TODO
+"Tile / Fill Sheet..." = "Tile / Fill Sheet..." # LOC:TODO
+"Tile Selection" = "Tile Selection" # LOC:TODO
 "Tool Config" = "Werkzeugkonfiguration"
 "Tool Diameter" = "Werkzeugdurchmesser"
 "Toolhead Offset" = "Werkzeugkopfversatz"
@@ -184,6 +191,7 @@
 "_Save" = "_Speichern"
 "_View" = "_Ansicht"
 "version" = "Version"
+"{0} tiles of {1} x {2} mm, filling right and down from the selection. Tip: align the design to the sheet's top-left first." = "{0} tiles of {1} x {2} mm, filling right and down from the selection. Tip: align the design to the sheet's top-left first." # LOC:TODO
 
 [context."3D Printer Host Type and address"]
 "Host Address" = "Hostadresse"
@@ -205,6 +213,7 @@
 "Gap (mm)" = "Gap (mm)" # LOC:TODO
 "Space Horizontally by Gap" = "Space Horizontally by Gap" # LOC:TODO
 "Space Vertically by Gap" = "Space Vertically by Gap" # LOC:TODO
+"Tile / Fill Sheet..." = "Tile / Fill Sheet..." # LOC:TODO
 
 [context."Allow Travel in Outlines Tooltip"]
 "Allows the pen to travel through shape outlines without lifting the pen up to start the next line." = "Erlaubt dem Stift, durch Formkonturen zu fahren, ohne ihn vor Beginn der nächsten Linie anzuheben."

@@ -430,6 +430,10 @@
                         <MenuItem loc:L.Context="Align" loc:L.Value="Space Vertically by Gap"
                                   Command="{Binding DistributeGapVerticallyCommand}"
                                   Icon="{ui:SymbolIcon Symbol=AlignSpaceBetweenHorizontal20}" />
+                        <Separator />
+                        <MenuItem loc:L.Context="Align" loc:L.Value="Tile / Fill Sheet..."
+                                  Command="{Binding TileSelectionCommand}"
+                                  Icon="{ui:SymbolIcon Symbol=Grid20}" />
                     </ContextMenu>
                 </ui:DropDownButton.Flyout>
 

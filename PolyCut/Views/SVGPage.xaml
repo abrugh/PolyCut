@@ -317,6 +317,8 @@
                         <ui:MenuItem Header="{loc:T 'Distribute Vertically'}" Icon="{ui:SymbolIcon Symbol=AlignSpaceEvenlyVertical20}" Command="{Binding DistributeVerticallyCommand}" loc:L.Context="Align" />
                         <ui:MenuItem Header="{loc:T 'Space Horizontally by Gap'}" Icon="{ui:SymbolIcon Symbol=AlignSpaceBetweenVertical20}" Command="{Binding DistributeGapHorizontallyCommand}" loc:L.Context="Align" />
                         <ui:MenuItem Header="{loc:T 'Space Vertically by Gap'}" Icon="{ui:SymbolIcon Symbol=AlignSpaceBetweenHorizontal20}" Command="{Binding DistributeGapVerticallyCommand}" loc:L.Context="Align" />
+                        <Separator />
+                        <ui:MenuItem Header="{loc:T 'Tile / Fill Sheet...'}" Icon="{ui:SymbolIcon Symbol=Grid20}" Command="{Binding TileSelectionCommand}" loc:L.Context="Align" />
                     </ui:MenuItem>
 
                     <ui:MenuItem x:Name="ArrangeMenuItem" Header="{loc:T 'Arrange'}" Icon="{ui:SymbolIcon Symbol=Archive16}" loc:L.Context="Arrange objects on canvas">

@@ -36,6 +36,7 @@
 "Clip Geometry to Canvas" = "Clip Geometry to Canvas" # LOC:TODO
 "Clips the geometry to the bounds of the canvas" = "Clips the geometry to the bounds of the canvas" # LOC:TODO
 "Close" = "閉じる"
+"Columns" = "Columns" # LOC:TODO
 "Combine" = "結合"
 "Combine Shapes" = "形状を結合"
 "Copy" = "コピー"
@@ -43,6 +44,7 @@
 "Curve simplification tolerance in pixels (try 0.5-2.5). Higher values simplify more aggressively at the cost of precision." = "曲線簡略化の許容誤差（ピクセル、0.5～2.5 を推奨）。値を大きくするとより強く簡略化されますが、精度は低下します。"
 "Curve-fitting Precision" = "曲線フィッティング精度"
 "Cut" = "切断"
+"Cut a box around each tile" = "Cut a box around each tile" # LOC:TODO
 "Cut level for the hierarchical watershed algorithm, 0-255. Higher values cut the region hierarchy at a finer level, producing more, smaller regions that follow content detail closely; lower values merge areas into fewer, larger regions." = "階層型 Watershed アルゴリズムのカットレベル（0～255）。値を高くすると領域階層をより細かく分割し、内容の細部に沿う小さな領域が多く生成されます。値を低くすると領域が統合され、より少数の大きな領域になります。"
 "Darkest shading spacing" = "最暗部のシェーディング間隔"
 "Delete" = "削除"
@@ -72,6 +74,7 @@
 "Finish Import" = "インポートを完了"
 "Fixed brightness cutoff (0-255) used for Black & White mode. Pixels darker than this value become foreground (black); pixels at or above it become background (white). Ignored when Adaptive Sampling is enabled." = "白黒モードで使用する固定輝度しきい値（0～255）。この値より暗いピクセルは前景（黒）になり、この値以上のピクセルは背景（白）になります。適応サンプリングが有効な場合は無視されます。"
 "GCode" = "GCode"
+"Gap" = "Gap" # LOC:TODO
 "Generate GCode" = "GCode を生成"
 "Global Settings" = "全般設定"
 "Grid Settings" = "グリッド設定"
@@ -117,6 +120,7 @@
 "Region Detection Settings" = "領域検出設定"
 "Reload Languages. Checks online for updated language definitions" = "言語を再読み込みします。更新された言語定義がオンラインにあるか確認します"
 "Rotation" = "回転"
+"Rows" = "Rows" # LOC:TODO
 "SVG Exported" = "SVG をエクスポートしました"
 "S_ave As..." = "名前を付けて保_存..."
 "Save" = "Save" # LOC:TODO
@@ -153,6 +157,9 @@
 "Sucessfully uploaded {0} to Moonraker" = "{0} を Moonraker に正常にアップロードしました"
 "The host could not be found" = "ホストが見つかりませんでした"
 "Threshold" = "しきい値"
+"Tile" = "Tile" # LOC:TODO
+"Tile / Fill Sheet..." = "Tile / Fill Sheet..." # LOC:TODO
+"Tile Selection" = "Tile Selection" # LOC:TODO
 "Tool Config" = "ツール設定"
 "Tool Diameter" = "ツール直径"
 "Toolhead Offset" = "ツールヘッドオフセット"
@@ -184,6 +191,7 @@
 "_Save" = "保_存"
 "_View" = "表_示"
 "version" = "バージョン"
+"{0} tiles of {1} x {2} mm, filling right and down from the selection. Tip: align the design to the sheet's top-left first." = "{0} tiles of {1} x {2} mm, filling right and down from the selection. Tip: align the design to the sheet's top-left first." # LOC:TODO
 
 [context."3D Printer Host Type and address"]
 "Host Address" = "ホストアドレス"
@@ -205,6 +213,7 @@
 "Gap (mm)" = "Gap (mm)" # LOC:TODO
 "Space Horizontally by Gap" = "Space Horizontally by Gap" # LOC:TODO
 "Space Vertically by Gap" = "Space Vertically by Gap" # LOC:TODO
+"Tile / Fill Sheet..." = "Tile / Fill Sheet..." # LOC:TODO
 
 [context."Allow Travel in Outlines Tooltip"]
 "Allows the pen to travel through shape outlines without lifting the pen up to start the next line." = "次の線を開始する前にペンを持ち上げることなく、形状の輪郭を横切って移動できるようにします。"
