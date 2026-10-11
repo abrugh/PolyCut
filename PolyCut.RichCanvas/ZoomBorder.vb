@@ -364,6 +364,7 @@ Public Class ZoomBorder
     End Sub
 
     Private Sub ZoomBorder_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
+        MarqueeMouseDown(e)
         HandleMouseDown(e, isPreview:=True)
     End Sub
 

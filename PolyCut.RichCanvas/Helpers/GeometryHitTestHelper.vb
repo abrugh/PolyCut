@@ -96,6 +96,40 @@ Public Class GeometryHitTestHelper
     End Function
 
 
+    ''' <summary>
+    ''' True when any visible part of the drawable touches <paramref name="rect"/> (canvas coordinates) - the same
+    ''' fill/stroke rules as a click. Items without a simple geometry (e.g. groups) use their bounding box.
+    ''' </summary>
+    Public Shared Function TouchesRect(drawable As IDrawable, rect As Rect) As Boolean
+        If drawable Is Nothing OrElse drawable.IsHidden OrElse rect.IsEmpty Then Return False
+
+        Dim wrapper = TryCast(drawable.DrawableElement?.Parent, ContentControl)
+        If wrapper Is Nothing Then Return False
+        Dim bounds = TransformMath.GetWorldBounds(wrapper)
+        If bounds.IsEmpty OrElse Not bounds.IntersectsWith(rect) Then Return False
+
+        Dim geometry = GetTransformedGeometry(drawable)
+        If geometry Is Nothing Then Return True
+
+        Dim box As New RectangleGeometry(rect)
+        Dim touches = Function(g As Geometry) g.FillContainsWithDetail(box, 0.5, ToleranceType.Absolute) <> IntersectionDetail.Empty
+
+        If TypeOf drawable.DrawableElement Is Line Then Return touches(geometry)
+
+        Dim fillVisible = drawable.Fill IsNot Nothing AndAlso (TryCast(drawable.Fill, SolidColorBrush) Is Nothing OrElse CType(drawable.Fill, SolidColorBrush).Color.A > 0)
+        If fillVisible AndAlso touches(geometry) Then Return True
+
+        Dim strokeVisible = drawable.Stroke IsNot Nothing AndAlso (TryCast(drawable.Stroke, SolidColorBrush) Is Nothing OrElse CType(drawable.Stroke, SolidColorBrush).Color.A > 0)
+        If strokeVisible Then
+            Dim thickness = If(drawable.StrokeThickness > 0, drawable.StrokeThickness, 1.0)
+            If touches(geometry.GetWidenedPathGeometry(New Pen(Brushes.Black, thickness + STROKE_HIT_PAD))) Then Return True
+        End If
+
+        ' Neither fill nor stroke visible (e.g. outline-only with zero stroke): fall back to the shape's area
+        Return Not fillVisible AndAlso Not strokeVisible AndAlso touches(geometry)
+    End Function
+
+
     Public Shared Function HitTestTopmost(drawables As IEnumerable(Of IDrawable), point As Point) As IDrawable
         If drawables Is Nothing Then Return Nothing
 
