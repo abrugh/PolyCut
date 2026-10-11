@@ -1,5 +1,3 @@
-Imports System.Windows.Documents
-
 Imports PolyCut.Shared
 
 ' Drag-select (marquee) with the pointer tool: press on empty canvas and drag to draw a selection box. Everything the
@@ -11,7 +9,7 @@ Partial Public Class ZoomBorder
 
     Private _marqueeStart As Point?          ' press point in ZoomBorder coordinates, while a marquee may start
     Private _marqueeActive As Boolean
-    Private _marqueeAdorner As MarqueeAdorner
+    Private _marqueeLayer As MarqueeLayer
 
     Private _marqueeWired As Boolean
 
@@ -50,14 +48,10 @@ Partial Public Class ZoomBorder
             If d.Length < MarqueeStartDistance Then Return
             _marqueeActive = True
             Me.CaptureMouse()
-            Dim layer = AdornerLayer.GetAdornerLayer(Me)
-            If layer IsNot Nothing Then
-                _marqueeAdorner = New MarqueeAdorner(Me)
-                layer.Add(_marqueeAdorner)
-            End If
         End If
 
-        If _marqueeAdorner IsNot Nothing Then _marqueeAdorner.Band = New Rect(_marqueeStart.Value, p)
+        Dim layer = EnsureMarqueeLayer()
+        If layer IsNot Nothing Then layer.Band = New Rect(_marqueeStart.Value, p)
         e.Handled = True
     End Sub
 
@@ -98,24 +92,45 @@ Partial Public Class ZoomBorder
         _marqueeStart = Nothing
         _marqueeActive = False
 
-        If _marqueeAdorner IsNot Nothing Then
-            AdornerLayer.GetAdornerLayer(Me)?.Remove(_marqueeAdorner)
-            _marqueeAdorner = Nothing
-        End If
+        If _marqueeLayer IsNot Nothing Then _marqueeLayer.Band = Rect.Empty
         If wasActive AndAlso Mouse.Captured Is Me Then Me.ReleaseMouseCapture()
     End Sub
 
+    ''' <summary>
+    ''' The box is drawn in its own layer next to this ZoomBorder - same grid cell, same size, clipped, same z-order
+    ''' as the transform gizmo overlay - so it stays inside the canvas viewport and under the tool pane and menus.
+    ''' </summary>
+    Private Function EnsureMarqueeLayer() As MarqueeLayer
+        If _marqueeLayer IsNot Nothing Then Return _marqueeLayer
+        Dim host = TryCast(Me.Parent, Panel)
+        If host Is Nothing Then Return Nothing
 
-    ''' <summary>Draws the selection box over the canvas (screen space, so it stays crisp at any zoom).</summary>
-    Private NotInheritable Class MarqueeAdorner : Inherits Adorner
+        _marqueeLayer = New MarqueeLayer()
+        _marqueeLayer.SetBinding(WidthProperty, New Binding("ActualWidth") With {.Source = Me})
+        _marqueeLayer.SetBinding(HeightProperty, New Binding("ActualHeight") With {.Source = Me})
+        _marqueeLayer.HorizontalAlignment = HorizontalAlignment
+        _marqueeLayer.VerticalAlignment = VerticalAlignment
+        _marqueeLayer.Margin = Margin
+        Grid.SetRow(_marqueeLayer, Grid.GetRow(Me))
+        Grid.SetColumn(_marqueeLayer, Grid.GetColumn(Me))
+        Grid.SetRowSpan(_marqueeLayer, Grid.GetRowSpan(Me))
+        Grid.SetColumnSpan(_marqueeLayer, Grid.GetColumnSpan(Me))
+        Panel.SetZIndex(_marqueeLayer, 0)
+        host.Children.Add(_marqueeLayer)
+        Return _marqueeLayer
+    End Function
+
+
+    ''' <summary>Draws the selection box in screen space, so it stays crisp at any zoom.</summary>
+    Private NotInheritable Class MarqueeLayer : Inherits FrameworkElement
 
         Private Shared ReadOnly FillBrush As Brush = MakeFill()
         Private Shared ReadOnly OutlinePen As Pen = MakePen()
-        Private _band As Rect
+        Private _band As Rect = Rect.Empty
 
-        Public Sub New(adorned As UIElement)
-            MyBase.New(adorned)
+        Public Sub New()
             IsHitTestVisible = False
+            ClipToBounds = True
         End Sub
 
         Public Property Band As Rect
